@@ -5,7 +5,7 @@ import cloudinary, { deleteFromCloudinary } from '../config/cloudinary.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+ 
 // Determine if we should use Cloudinary or local storage
 const USE_CLOUDINARY = process.env.USE_CLOUDINARY === 'true' || 
                       process.env.NODE_ENV === 'production' || 
@@ -32,7 +32,7 @@ export const handleFileUpload = (file, folder = 'general') => {
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
-    
+      console.log("File data:", file);
     return {
       filename: file.filename,
       path: `/uploads/${folder}/${file.filename}`,

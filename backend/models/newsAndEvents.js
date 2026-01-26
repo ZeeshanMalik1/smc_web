@@ -4,7 +4,7 @@ const newsAndEventsSchema = new mongoose.Schema({
   title: { type: String, required: true },
   date: { type: Date, required: true },
   description: String,
-  imageUrl: String,
+  imageUrl: String, 
   facebookEmbedUrl: { type: String, default: "" },
 }, { timestamps: true });
 

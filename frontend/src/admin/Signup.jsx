@@ -39,7 +39,7 @@ function AdminSignup() {
     setLoading(true);
 
     // Debug: Check API configuration
-    console.log("Using AUTH_API.SIGNUP:", AUTH_API.SIGNUP);
+    //console.log("Using AUTH_API.SIGNUP:", AUTH_API.SIGNUP);
 
     if (!AUTH_API.SIGNUP) {
       console.error("API configuration error: AUTH_API.SIGNUP is not defined");

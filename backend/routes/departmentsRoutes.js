@@ -1,19 +1,17 @@
 import express from "express";
-import Downloads from "../models/downloads.js";
+import Department from "../models/Department.js";
 import { downloadFile } from "../config/cloudinary.js";
 import { handleFileUpload, handleFileDeletion, getFileUrl } from "../utils/fileUpload.js";
 
 const router = express.Router();
 
-// Upload new download
-router.post("/add", downloadFile.single("file"), async (req, res) => {
+router.post("/", downloadFile.single("file"), async (req, res) => {
   try {
     console.log("Received upload request:", req.body);
     const { title, description } = req.body;
     
-    console.log("File data:", req.file);
-    const fileData = handleFileUpload(req.file, 'downloads');
-    const newDownload = new Downloads({ 
+    const fileData = handleFileUpload(req.file, 'Department');
+    const newDownload = new Department({ 
       title, 
       description, 
       fileUrl: fileData.path,
@@ -29,26 +27,26 @@ router.post("/add", downloadFile.single("file"), async (req, res) => {
   }
 });
 
-// Get all downloads
+// Get all Department
 router.get("/", async (req, res) => {
   try {
-    const downloads = await Downloads.find().sort({ createdAt: -1 });
-    res.json(downloads);
+    const Department = await Department.find().sort({ createdAt: -1 });
+    res.json(Department);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch downloads" });
+    res.status(500).json({ error: "Failed to fetch Department" });
   }
 });
 
 // Delete a download
 router.delete("/:id", async (req, res) => {
   try {
-    const download = await Downloads.findById(req.params.id);
+    const download = await Department.findById(req.params.id);
     if (!download) return res.status(404).json({ error: "File not found" });
 
     // Delete file from storage (Cloudinary or local)
     await handleFileDeletion(download.fileUrl, download.cloudinaryPublicId);
 
-    await Downloads.findByIdAndDelete(req.params.id);
+    await Department.findByIdAndDelete(req.params.id);
     res.json({ message: "File deleted successfully" });
   } catch (error) {
     console.error('Delete error:', error);

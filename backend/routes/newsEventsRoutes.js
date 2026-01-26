@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get("/", async (req, res) => {
-  try {
+  try { 
     const events = await NewsEvents.find().sort({ date: -1 });
     res.status(200).json(events);
   } catch (err) {
