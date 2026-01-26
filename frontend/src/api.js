@@ -19,7 +19,7 @@ export const SETTINGS_API = {
 // Content management endpoints
 export const CONTENT_API = {
     EVENTS: `${API_BASE_URL}/events`,
-    DOWNLOADS: `${API_BASE_URL}/downloads`,
+    DOWNLOADS: {get: `${API_BASE_URL}/downloads`, post: `${API_BASE_URL}/downloads/add`},
     NOTIFICATIONS: `${API_BASE_URL}/notifications`,
     RESEARCH: `${API_BASE_URL}/research`,
 };

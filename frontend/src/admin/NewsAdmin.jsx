@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { CONTENT_API, REQUEST_CONFIG, buildUrl, API_BASE_URL } from "../api";
+import { Newspaper, Plus, Calendar, Trash2, X, Save, Image as ImageIcon, Loader2 } from "lucide-react";
 
 function NewsAdmin() {
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -16,9 +18,12 @@ function NewsAdmin() {
     try {
       const res = await fetch(CONTENT_API.EVENTS);
       const data = await res.json();
-      setEvents(data);
+      // Defensive check: Ensure we are setting an array
+      setEvents(Array.isArray(data) ? data : data.events || []);
+      
     } catch (err) {
       console.error("Error fetching events:", err);
+      setEvents([]);
     }
   };
 
@@ -36,6 +41,7 @@ function NewsAdmin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const form = new FormData();
     Object.entries(formData).forEach(([key, val]) => {
@@ -49,22 +55,16 @@ function NewsAdmin() {
       });
 
       if (res.ok) {
-        alert("Event added successfully!");
         fetchEvents();
         setShowForm(false);
-        setFormData({
-          title: "",
-          date: "",
-          description: "",
-          facebookEmbedUrl: "",
-          image: null,
-        });
+        setFormData({ title: "", date: "", description: "", facebookEmbedUrl: "", image: null });
       } else {
         alert("Failed to add event.");
       }
     } catch (err) {
       console.error("Error adding event:", err);
-      alert("An error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,64 +79,98 @@ function NewsAdmin() {
   };
 
   return (
-    <div className="max-w-[900px] mx-auto my-10 p-5 bg-white rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.1)] font-['Segoe_UI',_sans-serif]">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-[#8B0000] text-2xl font-bold font-['Poppins',_sans-serif]">News & Events Manager</h2>
-        <button className="bg-[#8B0000] text-white p-[10px_16px] border-none rounded-lg cursor-pointer transition-colors hover:bg-[#7a0b10]" onClick={() => setShowForm(true)}>
-          + Add Event
-        </button>
+    <div className="max-w-[1000px] mx-auto my-10 p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-100">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-[#fff5f5] text-[#800000] rounded-2xl">
+            <Newspaper size={32} />
+          </div>
+          <div>
+            <h2 className="text-3xl font-black text-[#800000] tracking-tight">News & Events</h2>
+            <p className="text-gray-500 font-medium">Broadcast updates to your brand</p>
+          </div>
+        </div>
+        {!showForm && (
+          <button 
+            className="flex items-center gap-2 bg-[#800000] hover:bg-[#600000] text-white py-3 px-6 rounded-xl font-bold transition-all hover:shadow-lg hover:-translate-y-1"
+            onClick={() => setShowForm(true)}
+          >
+            <Plus size={20} /> Add Event
+          </button>
+        )}
       </div>
 
+      {/* Add Form */}
       {showForm && (
-        <div className="bg-[#f9f9f9] p-5 rounded-xl mb-5 animate-fadeIn">
-          <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-            <h3 className="mb-[15px] text-[#444] text-lg font-bold">Add News/Event</h3>
+        <div className="bg-[#fff5f5] p-8 rounded-3xl border border-[#ffcccc] mb-10 animate-in fade-in slide-in-from-top-4 duration-300">
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleSubmit}>
+            <div className="col-span-full flex justify-between items-center">
+              <h3 className="text-xl font-bold text-[#800000]">New Brand Update</h3>
+              <button type="button" onClick={() => setShowForm(false)} className="text-gray-400 hover:text-red-500">
+                <X size={24} />
+              </button>
+            </div>
 
-            <label className="block font-medium text-[#333]">
-              Title <span className="text-[#8B0000]">*</span>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-gray-700">Event Title*</label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full p-2 mt-1.5 border border-[#ccc] rounded-md outline-none focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000]"
+                placeholder="e.g. New Summer Collection Launch"
+                className="p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#800000] outline-none bg-white"
                 required
               />
-            </label>
+            </div>
 
-            <label className="block font-medium text-[#333]">
-              Date <span className="text-[#8B0000]">*</span>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-gray-700">Date*</label>
               <input
                 type="date"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className="w-full p-2 mt-1.5 border border-[#ccc] rounded-md outline-none focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000]"
+                className="p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#800000] outline-none bg-white"
                 required
               />
-            </label>
+            </div>
 
-            <label className="block font-medium text-[#333]">
-              Description
+            <div className="col-span-full flex flex-col gap-2">
+              <label className="text-sm font-bold text-gray-700">Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
+                placeholder="Details about the news or event..."
                 rows="3"
-                className="w-full p-2 mt-1.5 border border-[#ccc] rounded-md outline-none focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] resize-y"
+                className="p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#800000] outline-none bg-white resize-none"
               />
-            </label>
+            </div>
 
-            <label className="block font-medium text-[#333]">
-              Image
-              <input type="file" name="image" onChange={handleChange} className="w-full p-2 mt-1.5 border border-[#ccc] rounded-md outline-none focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] bg-white" />
-            </label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-gray-700">Cover Image</label>
+              <input 
+                type="file" 
+                name="image" 
+                onChange={handleChange} 
+                className="p-2 border border-gray-200 rounded-xl bg-white file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:bg-[#800000] file:text-white" 
+              />
+            </div>
 
-            <div className="flex gap-2.5 mt-2.5">
-              <button type="submit" className="bg-[#28a745] text-white border-none p-[8px_14px] rounded-md cursor-pointer transition-colors hover:bg-[#218838]">Save</button>
+            <div className="col-span-full flex gap-4 pt-4">
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="flex items-center gap-2 bg-[#28a745] hover:bg-[#218838] text-white py-3 px-8 rounded-xl font-bold transition-all"
+              >
+                {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
+                Save Event
+              </button>
               <button
                 type="button"
-                className="bg-[#aaa] text-white border-none p-[8px_14px] rounded-md cursor-pointer transition-colors hover:bg-[#888]"
+                className="bg-gray-200 text-gray-700 py-3 px-8 rounded-xl font-bold hover:bg-gray-300 transition-all"
                 onClick={() => setShowForm(false)}
               >
                 Cancel
@@ -146,33 +180,45 @@ function NewsAdmin() {
         </div>
       )}
 
-      <div className="mt-5 space-y-3">
-        {events.length === 0 ? (
-          <div className="text-center text-[#888] italic p-5 bg-[#fffdf5] rounded-xl">No items. Use Add Event to create.</div>
+      {/* List */}
+      <div className="space-y-4">
+        {(!Array.isArray(events) || events.length === 0) ? (
+          <div className="text-center p-16 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+            <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-500 font-bold">No news or events posted yet.</p>
+          </div>
         ) : (
           events.map((ev) => (
-            <div className="flex justify-between items-start bg-[#fafafa] p-[12px_16px] rounded-lg border border-[#eee] transition-all hover:bg-white hover:shadow-[0_6px_18px_rgba(0,0,0,0.05)] animate-fadeInUp max-[700px]:flex-col max-[700px]:gap-3" key={ev._id}>
-              <div className="flex gap-3 items-start">
-                {ev.imageUrl && (
-                  <img
-                    src={`${API_BASE_URL.replace("/api", "")}${ev.imageUrl}`}
-                    alt={ev.title}
-                    className="w-[100px] h-[80px] object-cover rounded-lg"
-                  />
-                )}
+            <div className="flex justify-between items-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all group" key={ev._id}>
+              <div className="flex gap-5 items-center">
+                <div className="relative">
+                  {ev.imageUrl ? (
+                    <img
+                      src={`${API_BASE_URL.replace("/api", "")}${ev.imageUrl}`}
+                      alt={ev.title}
+                      className="w-24 h-20 object-cover rounded-xl shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-24 h-20 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
+                      <ImageIcon size={24} />
+                    </div>
+                  )}
+                </div>
                 <div>
-                  <h3 className="m-0 text-[#333] font-bold">{ev.title}</h3>
-                  <p className="text-sm text-[#666] m-[4px_0]">
-                    {new Date(ev.date).toLocaleDateString()}
-                  </p>
-                  <p className="m-[4px_0] text-[#444]">{ev.description}</p>
+                  <h3 className="text-lg font-bold text-gray-800 group-hover:text-[#800000] transition-colors">{ev.title}</h3>
+                  <div className="flex items-center gap-2 text-sm text-[#800000] font-semibold mt-1">
+                    <Calendar size={14} />
+                    {new Date(ev.date).toLocaleDateString(undefined, { dateStyle: 'long' })}
+                  </div>
+                  <p className="text-gray-500 text-sm mt-1 line-clamp-1">{ev.description}</p>
                 </div>
               </div>
-              <div className="flex gap-2 max-[700px]:flex-row">
-                <button className="bg-[#dc3545] text-white border-none p-[6px_12px] rounded-md cursor-pointer text-[0.9rem] hover:bg-[#b02a37]" onClick={() => handleDelete(ev._id)}>
-                  Delete
-                </button>
-              </div>
+              <button 
+                className="p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                onClick={() => handleDelete(ev._id)}
+              >
+                <Trash2 size={22} />
+              </button>
             </div>
           ))
         )}
