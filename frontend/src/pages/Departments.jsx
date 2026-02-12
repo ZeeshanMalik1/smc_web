@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DepartmentsHero from '../components/DepartmentsHero';
 import DepartmentsList from '../components/DepartmentsList';
+import DepartmentsList2 from '../components/DepartmentsList2';
 
 function Departments() {
   return (
@@ -14,6 +15,7 @@ function Departments() {
       <Header />
       <DepartmentsHero />
       <DepartmentsList />
+      <DepartmentsList2 />
       <Footer />
     </>
   );

@@ -164,42 +164,40 @@ function Header() {
             </li>
 
             {/* OTHER LINKS */}
-            {/* DEPARTMENTS DROPDOWN */}
-            <li className="lg:relative group">
-              <NavLink
-                to="/departments"
-                className={() =>
-                  navClass(
-                    path.startsWith("/faculty-basic") ||
-                      path.startsWith("/faculty-clinical") ||
-                      path === "/departments"
-                  )
-                }
-              >
-                DEPARTMENTS{" "}
-                <i className="fas fa-chevron-down text-[10px] ml-1" />
-              </NavLink>
+           {/* DEPARTMENTS DROPDOWN */}
+<li className="lg:relative group">
+  <NavLink
+    to="/departments"
+    className={() =>
+      navClass(
+        path.startsWith("/faculty-") || path === "/departments"
+      )
+    }
+  >
+    DEPARTMENTS{" "}
+    <i className="fas fa-chevron-down text-[10px] ml-1" />
+  </NavLink>
 
-              {/* Desktop dropdown */}
-              <ul className="hidden lg:absolute lg:top-full lg:p-2 rounded lg:min-w-[200px] bg-white border border-[#eee] flex-col group-hover:flex shadow-md z-[1000]">
-                <li>
-                  <NavLink
-                    to="/faculty-basic"
-                    className={({ isActive }) => navClass(isActive)}
-                  >
-                    Faculty of Basic Sciences
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/faculty-clinical"
-                    className={({ isActive }) => navClass(isActive)}
-                  >
-                    Faculty of Clinical Sciences
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
+  {/* Desktop dropdown */}
+  <ul className="hidden lg:absolute lg:top-full lg:p-2 rounded lg:min-w-[240px] bg-white border border-[#eee] flex-col group-hover:flex shadow-md z-[1000]">
+    <li>
+      <NavLink
+        to="/faculty-basic-sciences"  
+        className={({ isActive }) => navClass(isActive)}
+      >
+        Faculty of Basic Sciences
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to="/faculty-clinical-sciences" 
+        className={({ isActive }) => navClass(isActive)}
+      >
+        Faculty of Clinical Sciences
+      </NavLink>
+    </li>
+  </ul>
+</li>
 
             <li>
               <NavLink

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const DepartmentsList = () => {
+const DepartmentsList2 = () => {
   const departments = [
     {
       name: "Physical Therapy",
@@ -35,11 +35,13 @@ const DepartmentsList = () => {
         {/* Section Header - More Elegant */}
         <div className="mb-20 text-center lg:text-left relative">
           <h2 className="text-4xl md:text-5xl font-extralight text-gray-900 tracking-tight">
-            Academic <span className="font-bold text-gray-800">Departments</span>
+            Academic{" "}
+            <span className="font-bold text-gray-800">Departments</span>
           </h2>
           <div className="h-[2px] w-24 bg-gradient-to-r from-gray-800 to-transparent mt-6 mx-auto lg:mx-0"></div>
           <p className="mt-6 text-gray-400 max-w-2xl text-lg font-light leading-relaxed">
-            Pioneering excellence through research innovation and clinical mastery in modern medicine.
+            Pioneering excellence through research innovation and clinical
+            mastery in modern medicine.
           </p>
         </div>
 
@@ -57,8 +59,9 @@ const DepartmentsList = () => {
                   alt={dept.name}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   onError={(e) => {
-                    e.target.onerror = null; 
-                    e.target.src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800"
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800";
                   }}
                 />
                 {/* Modern subtle tint */}
@@ -88,7 +91,12 @@ const DepartmentsList = () => {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
                   </svg>
                 </Link>
               </div>
@@ -100,4 +108,4 @@ const DepartmentsList = () => {
   );
 };
 
-export default DepartmentsList;
+export default DepartmentsList2;

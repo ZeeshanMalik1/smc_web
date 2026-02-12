@@ -2,8 +2,7 @@ import React from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// For Public
-import TermsConditions from "./pages/TermsConditions.jsx";
+// --- PUBLIC PAGES ---
 import Home from "./pages/Home.jsx";
 import VisionMission from "./pages/VisionMission.jsx";
 import PrincipalMessage from "./pages/PrincipalMessage.jsx";
@@ -15,8 +14,13 @@ import NewsEvents from "./pages/NewsEvents.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import Downloads from "./pages/Downloads.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
-import Privacy from "./pages/Privacy.jsx";
-// For Admin
+import TermsConditions from "./pages/TermsConditions.jsx";
+
+// Faculty Pages (Capitalized for React standards)
+import FacultyOfBasicSciences from "./pages/FacultyOfBasicSciences.jsx";
+import FacultyOfClinicalSciences from "./pages/FacultyOfClinicalSciences.jsx";
+
+// --- ADMIN PAGES ---
 import AdminLogin from "./admin/Auth.jsx";
 import AdminSignup from "./admin/Signup.jsx";
 import AdminLayout from "./admin/AdminLayout.jsx";
@@ -37,8 +41,10 @@ function App() {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          {/* --- PUBLIC ROUTES --- */}
+          {/* --- ROOT REDIRECT --- */}
           <Route path="/" element={<Navigate to="/home" replace />} />
+
+          {/* --- PUBLIC ROUTES --- */}
           <Route path="/home" element={<Home />} />
           <Route
             path="/about-us"
@@ -48,27 +54,34 @@ function App() {
           <Route path="/principal-message" element={<PrincipalMessage />} />
           <Route path="/admission-criteria" element={<AdmissionCriteria />} />
           <Route path="/fee-structure" element={<FeeStructure />} />
+
+          {/* Departments Overview */}
           <Route path="/departments" element={<Departments />} />
-          {/* <Route path="/department-of-physical-therapy" element={<Departmentn1 />} />
-          <Route path="/department-of-allied-health-sciences" element={<Departmentn2 />} />
-          <Route path="/department-of-food-and-nutrition-sciences" element={<Departmentn3 />} />
-          <Route path="/department-of-applied-sciences" element={<Departmentn4 />} /> */}
+
+          {/* Faculty Specific Routes (D1 & D2) */}
+          <Route
+            path="/faculty-basic-sciences"
+            element={<FacultyOfBasicSciences />}
+          />
+          <Route
+            path="/faculty-clinical-sciences"
+            element={<FacultyOfClinicalSciences />}
+          />
+
           <Route path="/research" element={<Research />} />
           <Route path="/news-events" element={<NewsEvents />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/privacy-policy" element={<Privacy />} />
 
-          {/* INDUSTRY BEST PRACTICE: Legal pages at root level */}
+          {/* Legal Pages */}
           <Route path="/terms-conditions" element={<TermsConditions />} />
 
           {/* --- AUTH ROUTES --- */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
 
-          {/* --- PROTECTED ADMIN ROUTES --- */}
-          {/* ProtectedRoute ko uncomment kar diya taake warning khatam ho aur security bani rahe */}
+          {/* --- PROTECTED ADMIN PANEL --- */}
           <Route
             path="/admin"
             element={
@@ -89,14 +102,29 @@ function App() {
             <Route path="profile" element={<AdminProfile />} />
           </Route>
 
-          {/* --- 404 NOT FOUND --- */}
+          {/* --- 404 PAGE --- */}
           <Route
             path="*"
             element={
-              <div
-                style={{ padding: 100, textAlign: "center", fontSize: "2rem" }}
-              >
-                404 - Page not found
+              <div style={{ padding: "100px 20px", textAlign: "center" }}>
+                <h1 style={{ color: "#8B0000", fontSize: "3rem" }}>404</h1>
+                <p style={{ fontSize: "1.2rem", color: "#666" }}>
+                  Oops! Page not found.
+                </p>
+                <button
+                  onClick={() => (window.location.href = "/home")}
+                  style={{
+                    marginTop: "20px",
+                    padding: "10px 20px",
+                    backgroundColor: "#8B0000",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Go Back Home
+                </button>
               </div>
             }
           />

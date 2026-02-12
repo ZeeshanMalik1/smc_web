@@ -1,12 +1,14 @@
 import React from 'react'
 import Header from "../components/Header";
-import D1 from './d1';
+
 import Footer from '../components/Footer';
+import BasicSciencesList from './BasicSciencesList';
 const FacultyOfBasicSciences = () => {
   return (
     <div>
        <Header />
-       <D1 />
+     
+      <BasicSciencesList/>
        <Footer/>
     </div>
   )

@@ -4,6 +4,11 @@ import { SETTINGS_API } from "../api";
 function OurLocation() {
   const [settings, setSettings] = useState(null);
 
+  // This is the specific EMBED URL for Sargodha Medical College.
+  // Standard links will ALWAYS say "Refused to Connect".
+  const DEFAULT_MAP =
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.554034870535!2d72.7118086762551!3d32.05436662057971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921770932283e3b%3A0x64426543b5e40854!2sSargodha%20Medical%20College!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s";
+
   useEffect(() => {
     fetch(SETTINGS_API.SITE)
       .then((res) => res.json())
@@ -14,9 +19,9 @@ function OurLocation() {
   return (
     <section className="bg-white py-12 md:py-20 font-sans">
       <div className="max-w-[1250px] mx-auto px-4 text-center">
-        {/* Section Heading with specific screenshot styling */}
+        {/* Section Heading */}
         <div className="mb-12">
-          <h2 className="text-[#8B0000] text-3xl md:text-5xl font-black mb-4 relative pb-5  inline-block">
+          <h2 className="text-[#8B0000] text-3xl md:text-6xl font-extrabold mb-4 relative pb-5 inline-block uppercase tracking-tight">
             Our Location
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#8B0000] rounded-full"></span>
           </h2>
@@ -24,24 +29,22 @@ function OurLocation() {
 
         {/* The White Card Container */}
         <div className="bg-white rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.06)] border border-gray-100 p-4 md:p-8 flex flex-col lg:flex-row gap-10 text-left">
-          {/* Map Side */}
-          <div className="flex-1 min-h-[350px] rounded-lg overflow-hidden border border-gray-200">
+          {/* Map Side - FIXED IFRAME */}
+          <div className="flex-1 min-h-[400px] rounded-lg overflow-hidden border border-gray-200 shadow-inner bg-gray-50">
             <iframe
-              src={
-                settings?.mapEmbedUrl ||
-                "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.4832578508493!2d72.70582237539228!3d32.0831610739611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921763a763a763b%3A0x7d8a6b6b6b6b6b6b!2sSargodha%20Medical%20College!5e0!3m2!1sen!2spk!4v1700000000000!5m2!1sen!2spk"
-              }
+              src={settings?.mapEmbedUrl || DEFAULT_MAP}
               className="w-full h-full border-0"
               allowFullScreen=""
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
               title="SMC Location Map"
             ></iframe>
           </div>
 
-          {/* Details Side */}
+          {/* Details Side - Original Design Preserved */}
           <div className="lg:w-[40%] flex flex-col justify-between py-2">
             <div>
-              <h3 className="text-[#8B0000] text-2xl md:text-3xl font-black mb-8 tracking-tight">
+              <h3 className="text-[#8B0000] text-2xl md:text-3xl font-black mb-8 tracking-tight uppercase">
                 Find Us
               </h3>
 
@@ -75,7 +78,7 @@ function OurLocation() {
                   <div>
                     <h4 className="font-bold text-gray-900 text-lg">Email</h4>
                     <p className="text-gray-600 break-all font-medium">
-                      {settings?.email || "Principle.smc.health@punjab.gov.pk"}
+                      {settings?.email || "principal.smc@health.gov.pk"}
                     </p>
                   </div>
                 </div>
@@ -84,7 +87,7 @@ function OurLocation() {
 
             {/* Opening Hours Section */}
             <div className="mt-10 pt-8 border-t border-gray-100">
-              <h3 className="text-[#8B0000] text-2xl font-black mb-5 tracking-tight">
+              <h3 className="text-[#8B0000] text-2xl font-black mb-5 tracking-tight uppercase">
                 Opening Hours
               </h3>
               <div className="space-y-2">

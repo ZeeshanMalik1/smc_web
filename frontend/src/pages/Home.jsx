@@ -11,7 +11,7 @@ import OurLocation from "../components/OurLocation";
 import Header from "../components/Header";
 function Home() {
   return (
-    <>
+    <>                
       <Helmet>
         <title>Home - SMC</title>
       </Helmet>

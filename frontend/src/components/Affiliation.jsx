@@ -1,23 +1,51 @@
 import React from "react";
 
 function Affiliation() {
+  const logos = [1, 2, 3, 4, 1, 2, 3, 4];
+
   return (
-    <section className="bg-gradient-to-br from-white to-[#f7f7f7] py-[70px] overflow-hidden relative">
-      <div className="max-w-[1200px] mx-auto text-center px-[16px]">
-        <h2 className="text-[2.3rem] font-extrabold text-[#8B0000] relative inline-block tracking-[1px] uppercase mb-10 after:content-[''] after:block after:w-[90px] after:h-[5px] after:bg-[#8B0000] after:mx-auto after:mt-3 after:rounded-[3px] after:animate-underlineAnim max-[992px]:text-[2.2rem] max-[768px]:text-[2rem] max-[576px]:text-[1.8rem]">
-          Affiliation & Recognition
+    <section className="bg-white py-20 overflow-hidden relative">
+      <style>
+        {`
+          @keyframes scroll-fast {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .lightspeed-track {
+            display: flex;
+            width: max-content;
+            animation: scroll-fast 20s linear infinite;
+          }
+        `}
+      </style>
+
+      {/* Distance increased from mb-14 to mb-24 */}
+      <div className="max-w-[1600px] mx-auto text-center px-4 mb-48">
+        <h2 className="text-3xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase">
+          Global <span className="text-[#8B0000]">Affiliations</span>
         </h2>
+        <div className="h-1 w-24 bg-[#8B0000] mt-4 mx-auto rounded-full"></div>
       </div>
 
-      <div className="overflow-hidden whitespace-nowrap relative py-[25px] group">
-        <div className="flex items-center animate-scrollLogos will-change-transform group-hover:[animation-play-state:paused]">
-          {[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4].map((n, i) => (
-            <img
+      <div
+        className="relative w-full overflow-hidden 
+        before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-16 md:before:w-32 before:bg-gradient-to-r before:from-white before:to-transparent 
+        after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-16 md:after:w-32 after:bg-gradient-to-l after:from-white after:to-transparent"
+      >
+        <div className="lightspeed-track group hover:[animation-play-state:paused]">
+          {[...logos, ...logos].map((n, i) => (
+            <div
               key={i}
-              src={`/images/logo${n}.${n === 1 || n === 3 ? 'webp' : 'png'}`}
-              alt="Logo"
-              className="h-[110px] mx-[28px] opacity-80 transition-all duration-400 grayscale-[20%] hover:scale-[1.15] hover:opacity-100 hover:grayscale-0 max-[992px]:h-20 max-[992px]:mx-[22px] max-[768px]:h-[65px] max-[768px]:mx-[18px] max-[576px]:h-[50px] max-[576px]:mx-[14px]"
-            />
+              className="flex-shrink-0 flex items-center justify-center px-4
+                         w-[50vw] sm:w-[25vw] lg:w-[12.5vw]"
+            >
+              <img
+                src={`/images/logo${n}.${n === 1 || n === 3 ? "webp" : "png"}`}
+                alt="Institutional Logo"
+                /* Sizes increased by ~10%: h-14->h-16, h-20->h-24, h-24->h-[105px] */
+                className="h-16 md:h-24 lg:h-[105px] w-auto object-contain transition-all duration-500 hover:scale-110 drop-shadow-sm"
+              />
+            </div>
           ))}
         </div>
       </div>
