@@ -198,14 +198,14 @@ function Header() {
               </ul>
             </li>
 
-            <li>
+            {/* <li>
               <NavLink
                 to="/research"
                 className={({ isActive }) => navClass(isActive)}
               >
                 RESEARCH
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink
                 to="/news-events"
