@@ -79,10 +79,13 @@ const ConvocationForm = () => {
 
         // Append all text fields
         Object.keys(formData).forEach(key => {
-            if (key !== "picture" && key !== "distinctionFiles" && key !== "positions") {
+            if (key !== "picture" && key !== "distinctionFiles" && key !== "positions" && key !== "whatsapp" && key !== "countryCode") {
                 data.append(key, formData[key]);
             }
         });
+
+        // Combine country code and whatsapp
+        data.append("whatsapp", `${formData.countryCode} ${formData.whatsapp}`);
 
         // Append simple sub-objects (positions) by flat key
         if (formData.positionHolder === "Yes") {
@@ -114,8 +117,31 @@ const ConvocationForm = () => {
             const result = await response.json();
 
             if (response.ok) {
-                setSubmitStatus({ type: "success", message: "Form submitted successfully!" });
-                // Reset form optionally here
+                setSubmitStatus({ type: "success", message: "Form submitted successfully! You will receive a confirmation email shortly." });
+                // Reset form
+                setFormData({
+                    name: "",
+                    fatherName: "",
+                    picture: null,
+                    countryCode: "+92",
+                    whatsapp: "",
+                    email: "",
+                    collegeId: "",
+                    uhsReg: "",
+                    pmdReg: "",
+                    academicSession: "",
+                    passingYear: "",
+                    distinction: "No",
+                    distinctionFiles: { year1: null, year2: null, year3: null, year4: null, year5: null },
+                    positionHolder: "No",
+                    positions: { year1: "", year2: "", year3: "", year4: "", year5: "" },
+                    department: "",
+                    currentPosition: "",
+                    attendConvocation: "Yes",
+                });
+                // Reset any file inputs manually if needed, but since we rely on state, it's mostly fine
+                const fileInputs = document.querySelectorAll('input[type="file"]');
+                fileInputs.forEach(input => input.value = "");
             } else {
                 setSubmitStatus({ type: "error", message: result.error || "Failed to submit form." });
             }

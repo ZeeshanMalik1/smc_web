@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { AUTH_API } from "../api";
 
 function ProtectedRoute({ children }) {
   const [isValid, setIsValid] = useState(null);
@@ -8,7 +9,7 @@ function ProtectedRoute({ children }) {
     const token = localStorage.getItem("admin_token");
     if (!token) return setIsValid(false);
 
-    fetch(`${process.env.REACT_APP_API_URL}/auth/verify`, {
+    fetch(AUTH_API.VERIFY, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

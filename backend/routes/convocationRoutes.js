@@ -1,6 +1,7 @@
 import express from "express";
 import Convocation from "../models/Convocation.js";
 import { uploadConvocation } from "../config/cloudinary.js";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -80,6 +81,61 @@ router.post("/", cpUpload, async (req, res) => {
 
         await newConvocation.save();
 
+        // Send confirmation email asynchronously
+        if (email) {
+            try {
+                // Configure transporter (using Gmail/SMTP as an example, ideally use env vars)
+                const transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        // User should set up these env variables for the email to actually work
+                        user: process.env.EMAIL_USER || "your-email@gmail.com",
+                        pass: process.env.EMAIL_PASS || "your-app-password",
+                    },
+                });
+
+                const mailOptions = {
+                    from: process.env.EMAIL_USER || "your-email@gmail.com",
+                    to: email,
+                    subject: "Convocation Registration Confirmation - SMC",
+                    html: `
+                        <div style="font-family: Arial, sans-serif; max-w: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                            <div style="background-color: #8b0000; color: white; padding: 20px; text-align: center;">
+                                <h1 style="margin: 0; font-size: 24px;">Registration Confirmed</h1>
+                            </div>
+                            <div style="padding: 30px; background-color: #f9f9f9;">
+                                <p style="font-size: 16px; color: #333;">Dear <strong>${name}</strong>,</p>
+                                <p style="font-size: 16px; color: #333; line-height: 1.5;">
+                                    Your registration for the SMC Convocation has been successfully received.
+                                </p>
+                                <div style="background-color: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                                    <h3 style="margin-top: 0; color: #8b0000; border-bottom: 2px solid #8b0000; padding-bottom: 10px;">Registration Details</h3>
+                                    <p style="margin: 5px 0;"><strong>Attendance Name:</strong> ${name}</p>
+                                    <p style="margin: 5px 0;"><strong>College ID:</strong> ${collegeId || "N/A"}</p>
+                                    <p style="margin: 5px 0;"><strong>Department:</strong> ${department || "N/A"}</p>
+                                    <p style="margin: 5px 0;"><strong>Will Attend:</strong> ${attendConvocation}</p>
+                                </div>
+                                <p style="font-size: 14px; color: #666; margin-top: 30px;">
+                                    If you have any questions, please contact the administration.
+                                </p>
+                                <p style="font-size: 14px; color: #666;">
+                                    Best Regards,<br>
+                                    <strong>SMC Administration</strong>
+                                </p>
+                            </div>
+                        </div>
+                    `,
+                };
+
+                // Don't wait for email to send to return response
+                transporter.sendMail(mailOptions).catch(err => {
+                    console.error("Failed to send confirmation email:", err);
+                });
+            } catch (err) {
+                console.error("Mail setup error:", err);
+            }
+        }
+
         res.status(201).json({ message: "Convocation registration submitted successfully", record: newConvocation });
     } catch (error) {
         console.error("Error submitting convocation form:", error);
@@ -94,6 +150,19 @@ router.get("/", async (req, res) => {
         res.status(200).json(records);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch records" });
+    }
+});
+
+// Endpoint to delete a registration by ID
+router.delete("/:id", async (req, res) => {
+    try {
+        const deletedRecord = await Convocation.findByIdAndDelete(req.params.id);
+        if (!deletedRecord) {
+            return res.status(404).json({ error: "Record not found" });
+        }
+        res.status(200).json({ message: "Record deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete record" });
     }
 });
 

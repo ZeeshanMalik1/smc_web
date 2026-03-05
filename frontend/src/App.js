@@ -35,6 +35,7 @@ import DepartmentsAdmin from "./admin/DepartmentsAdmin.jsx";
 import ResearchAdmin from "./admin/ResearchAdmin.jsx";
 import SiteSettings from "./admin/SiteSettings.jsx";
 import AdminProfile from "./admin/AdminProfile.jsx";
+import ConvocationAdmin from "./admin/ConvocationAdmin.jsx";
 import ProtectedRoute from "./admin/ProtectedRoute.jsx";
 
 function App() {
@@ -102,6 +103,7 @@ function App() {
             <Route path="research" element={<ResearchAdmin />} />
             <Route path="settings" element={<SiteSettings />} />
             <Route path="profile" element={<AdminProfile />} />
+            <Route path="convocation" element={<ConvocationAdmin />} />
           </Route>
 
           {/* --- 404 PAGE --- */}
