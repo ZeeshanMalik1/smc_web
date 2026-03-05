@@ -8,6 +8,7 @@ const ConvocationForm = () => {
         name: "",
         fatherName: "",
         picture: null,
+        countryCode: "+92",
         whatsapp: "",
         email: "",
         collegeId: "",
@@ -31,6 +32,7 @@ const ConvocationForm = () => {
             year4: "",
             year5: "",
         },
+        department: "",
         currentPosition: "",
         attendConvocation: "Yes",
     });
@@ -104,8 +106,18 @@ const ConvocationForm = () => {
                                     <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="example@email.com" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp # (with country code)</label>
-                                    <input type="text" name="whatsapp" required value={formData.whatsapp} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="+92 3XX XXXXXXX" />
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp #</label>
+                                    <div className="flex gap-2">
+                                        <select name="countryCode" value={formData.countryCode} onChange={handleChange} className="w-1/3 border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000] bg-white">
+                                            <option value="+92">+92 (PK)</option>
+                                            <option value="+1">+1 (US/CA)</option>
+                                            <option value="+44">+44 (UK)</option>
+                                            <option value="+971">+971 (UAE)</option>
+                                            <option value="+966">+966 (SA)</option>
+                                            <option value="+61">+61 (AU)</option>
+                                        </select>
+                                        <input type="text" name="whatsapp" required value={formData.whatsapp} onChange={handleChange} className="w-2/3 border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="3XX XXXXXXX" />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Recent Passport Size Picture</label>
@@ -209,8 +221,8 @@ const ConvocationForm = () => {
                             <h2 className="text-xl font-semibold border-b pb-2 mb-4 text-[#8b0000]">Current Status</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Current Working Position</label>
-                                    <input type="text" name="currentPosition" value={formData.currentPosition} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="Where are you working right now?" />
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                                    <input type="text" name="department" value={formData.department} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="E.g. Cardiology, Surgery, etc." />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Do you want to attend the convocation?</label>
@@ -224,6 +236,10 @@ const ConvocationForm = () => {
                                             <span className="ml-2">No</span>
                                         </label>
                                     </div>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Current Working Position / Details</label>
+                                    <textarea name="currentPosition" rows="3" value={formData.currentPosition} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="Detail your current working position..."></textarea>
                                 </div>
                             </div>
                         </div>
